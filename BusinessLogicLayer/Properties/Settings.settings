@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="BusinessLogicLayer.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="BusinessLogicLayer_checkDataProfileStatus_MEAI_OnlineServices_2017_webServices_GO_checkDataProfileStatus_V2_WSDL" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://eaidev.mobinil.com:5555/ws/MEAI_OnlineServices_2017.webServices.GO.checkDataProfileStatus_V2_WSDL/MEAI_OnlineServices_2017_webServices_GO_checkDataProfileStatus_V2_WSDL_Port</Value>
+    </Setting>
+    <Setting Name="BusinessLogicLayer_getEligibleServiceClassesMigration_getEligibleServiceClassesMigration_WSDL" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://eaidev.mobinil.com:5555/ws/MEAI_OnlineServices_2015.webServices.SelfServices:getEligibleServiceClassesMigration_WSDL/MEAI_OnlineServices_2015_webServices_SelfServices_getEligibleServiceClassesMigration_WSDL_Port</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

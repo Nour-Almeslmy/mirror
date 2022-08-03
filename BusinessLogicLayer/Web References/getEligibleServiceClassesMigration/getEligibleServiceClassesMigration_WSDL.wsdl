@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://eaidev.mobinil.com/MEAI_OnlineServices_2015/webServices/SelfServices/getEligibleServiceClassesMigration_WSDL" xmlns:soapjms="http://www.w3.org/2010/soapjms/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" name="getEligibleServiceClassesMigration_WSDL" targetNamespace="http://eaidev.mobinil.com/MEAI_OnlineServices_2015/webServices/SelfServices/getEligibleServiceClassesMigration_WSDL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://eaidev.mobinil.com/MEAI_OnlineServices_2015/webServices/SelfServices/getEligibleServiceClassesMigration_WSDL">
+      <xsd:element name="getEligibleServiceClassesMigration" type="tns:getEligibleServiceClassesMigration" />
+      <xsd:element name="getEligibleServiceClassesMigrationResponse" type="tns:getEligibleServiceClassesMigrationResponse" />
+      <xsd:complexType name="getEligibleServiceClassesMigration">
+        <xsd:sequence>
+          <xsd:element name="getEligibleServiceClassesMigration_Input" nillable="true" type="tns:getEligibleServiceClassesMigration_Input" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getEligibleServiceClassesMigration_Input">
+        <xsd:sequence>
+          <xsd:element name="dial" nillable="true" type="xsd:string" />
+          <xsd:element name="sourceId" nillable="true" type="xsd:string" />
+          <xsd:element name="language" nillable="true" type="xsd:string" />
+          <xsd:element name="familyFlag" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getEligibleServiceClassesMigrationResponse">
+        <xsd:sequence>
+          <xsd:element name="getEligibleServiceClassesMigration_Output" nillable="true" type="tns:getEligibleServiceClassesMigration_Output" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="getEligibleServiceClassesMigration_Output">
+        <xsd:sequence>
+          <xsd:element maxOccurs="unbounded" name="familyId" nillable="true" type="tns:familyId" />
+          <xsd:element name="errorDoc" nillable="true" type="tns:errorDoc" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="familyId">
+        <xsd:sequence>
+          <xsd:element name="familyId" nillable="true" type="xsd:string" />
+          <xsd:element name="familyName" nillable="true" type="xsd:string" />
+          <xsd:element maxOccurs="unbounded" name="serviceClassParameters" nillable="true" type="tns:serviceClassParameters" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="serviceClassParameters">
+        <xsd:sequence>
+          <xsd:element name="serviceClassId" nillable="true" type="xsd:string" />
+          <xsd:element name="serviceClassName" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+      <xsd:complexType name="errorDoc">
+        <xsd:sequence>
+          <xsd:element name="status" nillable="true" type="xsd:string" />
+          <xsd:element name="errorCode" nillable="true" type="xsd:string" />
+          <xsd:element name="errorDesc" nillable="true" type="xsd:string" />
+        </xsd:sequence>
+      </xsd:complexType>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="getEligibleServiceClassesMigration_WSDL_PortType_getEligibleServiceClassesMigration">
+    <wsdl:part name="parameters" element="tns:getEligibleServiceClassesMigration" />
+  </wsdl:message>
+  <wsdl:message name="getEligibleServiceClassesMigration_WSDL_PortType_getEligibleServiceClassesMigrationResponse">
+    <wsdl:part name="parameters" element="tns:getEligibleServiceClassesMigrationResponse" />
+  </wsdl:message>
+  <wsdl:portType name="getEligibleServiceClassesMigration_WSDL_PortType">
+    <wsdl:operation name="getEligibleServiceClassesMigration">
+      <wsdl:input message="tns:getEligibleServiceClassesMigration_WSDL_PortType_getEligibleServiceClassesMigration" />
+      <wsdl:output message="tns:getEligibleServiceClassesMigration_WSDL_PortType_getEligibleServiceClassesMigrationResponse" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MEAI_OnlineServices_2015_webServices_SelfServices_getEligibleServiceClassesMigration_WSDL_Binder" type="tns:getEligibleServiceClassesMigration_WSDL_PortType">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="getEligibleServiceClassesMigration">
+      <soap:operation soapAction="MEAI_OnlineServices_2015_webServices_SelfServices_getEligibleServiceClassesMigration_WSDL_Binder_getEligibleServiceClassesMigration" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" parts="parameters" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" parts="parameters" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="getEligibleServiceClassesMigration_WSDL">
+    <wsdl:port name="MEAI_OnlineServices_2015_webServices_SelfServices_getEligibleServiceClassesMigration_WSDL_Port" binding="tns:MEAI_OnlineServices_2015_webServices_SelfServices_getEligibleServiceClassesMigration_WSDL_Binder">
+      <soap:address location="http://eaidev.mobinil.com:5555/ws/MEAI_OnlineServices_2015.webServices.SelfServices:getEligibleServiceClassesMigration_WSDL/MEAI_OnlineServices_2015_webServices_SelfServices_getEligibleServiceClassesMigration_WSDL_Port" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -121,6 +121,31 @@
     <Compile Include="DTOs\ProfileStatusServiceResponseDTO.cs" />
     <Compile Include="DTOs\RegisterDTO.cs" />
     <Compile Include="DTOs\TokenDTO.cs" />
+    <Compile Include="Migrations\202207231744100_init.cs" />
+    <Compile Include="Migrations\202207231744100_init.designer.cs">
+      <DependentUpon>202207231744100_init.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207280601524_add-identity.cs" />
+    <Compile Include="Migrations\202207280601524_add-identity.designer.cs">
+      <DependentUpon>202207280601524_add-identity.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207291320394_rename-identity-columns.cs" />
+    <Compile Include="Migrations\202207291320394_rename-identity-columns.designer.cs">
+      <DependentUpon>202207291320394_rename-identity-columns.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207291817077_change-col-names-back.cs" />
+    <Compile Include="Migrations\202207291817077_change-col-names-back.designer.cs">
+      <DependentUpon>202207291817077_change-col-names-back.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207291826339_no-dateJoined.cs" />
+    <Compile Include="Migrations\202207291826339_no-dateJoined.designer.cs">
+      <DependentUpon>202207291826339_no-dateJoined.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202207291925015_alter-identity-table-names.cs" />
+    <Compile Include="Migrations\202207291925015_alter-identity-table-names.designer.cs">
+      <DependentUpon>202207291925015_alter-identity-table-names.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\BucketOption.cs" />
     <Compile Include="Models\ErrorCode.cs" />
@@ -139,8 +164,26 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <EmbeddedResource Include="Migrations\202207231744100_init.resx">
+      <DependentUpon>202207231744100_init.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207280601524_add-identity.resx">
+      <DependentUpon>202207280601524_add-identity.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207291320394_rename-identity-columns.resx">
+      <DependentUpon>202207291320394_rename-identity-columns.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207291817077_change-col-names-back.resx">
+      <DependentUpon>202207291817077_change-col-names-back.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207291826339_no-dateJoined.resx">
+      <DependentUpon>202207291826339_no-dateJoined.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202207291925015_alter-identity-table-names.resx">
+      <DependentUpon>202207291925015_alter-identity-table-names.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

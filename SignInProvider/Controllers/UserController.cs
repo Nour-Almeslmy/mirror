@@ -8,6 +8,7 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,13 @@ namespace bucketSubs.service.Controllers
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
+        //private ApplicationUserManager UserManager
+        //{
+        //    get
+        //    {
+        //        return Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        //    }
+        //}
 
         private readonly ApplicationUserManager _UserManager;
         public UserController(ApplicationUserManager UserManager)
@@ -92,7 +100,6 @@ namespace bucketSubs.service.Controllers
         }
         #endregion
 
-        #region Login
         [HttpGet]
         [Route("Login")]
         public async Task<IHttpActionResult> Login(LoginDTO loginDTO)
@@ -120,19 +127,7 @@ namespace bucketSubs.service.Controllers
 
                 var userClaims = await _UserManager.GetClaimsAsync(user.Id);
 
-                var ResultToken = GenerateToken(userClaims.ToList());
-
-                //user.RefreshToken = ResultToken.RefreshToken;
-                //user.RefreshTokenExpiryDate = DateTime.Now.AddMonths(1);
-                
-                //var UpdatingResult =  await _UserManager.UpdateAsync(user);
-
-                //if(!UpdatingResult.Succeeded)
-                //{
-                //    return InternalServerError(new Exception("Please Try Again in Few Minutes ..."));
-                //}
-
-                return Ok(ResultToken);
+                return Ok(GenerateToken(userClaims.ToList(), null));
             }
             catch (Exception e)
             {
@@ -141,14 +136,8 @@ namespace bucketSubs.service.Controllers
             }
 
         }
-        #endregion
 
-        #region RefreshToken
-
-        #endregion
-
-        #region GenerateToken
-        private TokenDTO GenerateToken(List<Claim> userClaims)
+        private TokenDTO GenerateToken(List<Claim> userClaims, DateTime? exp)
         {
             #region Getting Secret Key ready
             var secretKey = ConfigurationManager.AppSettings["SecretKey"];
@@ -167,7 +156,7 @@ namespace bucketSubs.service.Controllers
 
             var jwt = new JwtSecurityToken(
                 claims: userClaims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: exp ?? DateTime.Now.AddMinutes(15),
                 notBefore: DateTime.Now,
                 issuer: "SignIn_Provider",
                 audience: "BucketSubs_Service",
@@ -182,11 +171,9 @@ namespace bucketSubs.service.Controllers
             return new TokenDTO
             {
                 Token = resultToken,
-                ExpiryDate = jwt.ValidTo,
-                RefreshToken = Guid.NewGuid()
+                ExpiryDate = jwt.ValidTo
             };
         }
-        #endregion
 
         private async Task DeleteUserClaims(string id, List<Claim> claimsList, int cliamsCount)
         {

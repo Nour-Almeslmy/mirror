@@ -23,7 +23,7 @@ namespace bucketSubs.service.App_Start
         {
             HttpConfiguration httpConfig = new HttpConfiguration();
 
-            //ConfigureOAuthTokenGeneration(app);
+            ConfigureOAuthTokenGeneration(app);
 
             //app.UseCors(CorsOptions.AllowAll);
             //ConfigureWebApi(httpConfig);
@@ -62,7 +62,7 @@ namespace bucketSubs.service.App_Start
             app.CreatePerOwinContext(ApplicationDbContext.Create);
 
             //User Manager Instance
-            //app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
         }
 
         private void ConfigureWebApi(HttpConfiguration config)

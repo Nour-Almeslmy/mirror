@@ -59,7 +59,7 @@ namespace bucketSubs.service.OAuth
                     var UserName = TokenValidationResult.Claims[ClaimTypes.NameIdentifier].ToString();
                     var UserRoles = TokenValidationResult.Claims[ClaimTypes.Role].ToString().Split(',');
 
-                    var identity = new GenericIdentity(UserName);
+                    //var identity = new GenericIdentity(UserName);
 
                     IPrincipal Principal = new GenericPrincipal(identity, UserRoles);
 

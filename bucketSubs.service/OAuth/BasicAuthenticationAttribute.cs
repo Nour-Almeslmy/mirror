@@ -89,6 +89,7 @@ namespace BusinessLogicLayer.CustomFilters
         }
         */
         #endregion
+        #region GenerateToken
         private TokenDTO GenerateToken(List<Claim> userClaims, DateTime? exp)
         {
             #region Getting Secret Key ready
@@ -124,7 +125,7 @@ namespace BusinessLogicLayer.CustomFilters
                 ExpiryDate = jwt.ValidTo
             };
         }
-
+        #endregion
         private async Task<bool> AuthorizeRequest_ValidToken(HttpActionContext actionContext)
         {
             var RequestToken = actionContext.Request.Headers.Authorization?.Parameter;

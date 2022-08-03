@@ -26,7 +26,7 @@ namespace bucketSubs.service.Controllers
         }
 
         [ValidDial]
-        //[BasicAuthentication]  //replaced with a basic authentication message handler
+        [BasicAuthentication]
         [CustomAuthorize(Roles ="user")]
         [HttpGet, ResponseType(typeof(ProfileStatusServiceResponseDTO))]
         [Route("getProfileStatus/{dial_}")]

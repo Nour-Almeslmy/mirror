@@ -125,7 +125,7 @@ namespace bucketSubs.service.Controllers
                 }
 
                 var userClaims = await UserManager.GetClaimsAsync(user.Id);
-
+                userClaims.Add(new Claim("FacebookId", "8576474"));
                 return Ok(GenerateToken(userClaims.ToList(), null));
             }
             catch(Exception e)

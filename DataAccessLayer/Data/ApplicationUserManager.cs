@@ -10,6 +10,8 @@ namespace DataAccessLayer.Data
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
+        //public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store) {}
+
         public ApplicationUserManager(ApplicationDbContext context) : base(new UserStore<ApplicationUser>(context))
         {
             this.UserValidator = new UserValidator<ApplicationUser>(this)

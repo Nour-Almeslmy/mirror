@@ -22,13 +22,6 @@ namespace bucketSubs.service.Controllers
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        //private ApplicationUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    }
-        //}
 
         private readonly ApplicationUserManager _UserManager;
         public UserController(ApplicationUserManager UserManager)

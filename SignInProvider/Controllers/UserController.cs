@@ -8,7 +8,6 @@ using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -93,6 +92,7 @@ namespace bucketSubs.service.Controllers
         }
         #endregion
 
+        #region Login
         [HttpGet]
         [Route("Login")]
         public async Task<IHttpActionResult> Login(LoginDTO loginDTO)
@@ -120,7 +120,19 @@ namespace bucketSubs.service.Controllers
 
                 var userClaims = await _UserManager.GetClaimsAsync(user.Id);
 
-                return Ok(GenerateToken(userClaims.ToList(), null));
+                var ResultToken = GenerateToken(userClaims.ToList());
+
+                //user.RefreshToken = ResultToken.RefreshToken;
+                //user.RefreshTokenExpiryDate = DateTime.Now.AddMonths(1);
+                
+                //var UpdatingResult =  await _UserManager.UpdateAsync(user);
+
+                //if(!UpdatingResult.Succeeded)
+                //{
+                //    return InternalServerError(new Exception("Please Try Again in Few Minutes ..."));
+                //}
+
+                return Ok(ResultToken);
             }
             catch (Exception e)
             {
@@ -129,8 +141,14 @@ namespace bucketSubs.service.Controllers
             }
 
         }
+        #endregion
 
-        private TokenDTO GenerateToken(List<Claim> userClaims, DateTime? exp)
+        #region RefreshToken
+
+        #endregion
+
+        #region GenerateToken
+        private TokenDTO GenerateToken(List<Claim> userClaims)
         {
             #region Getting Secret Key ready
             var secretKey = ConfigurationManager.AppSettings["SecretKey"];
@@ -149,7 +167,7 @@ namespace bucketSubs.service.Controllers
 
             var jwt = new JwtSecurityToken(
                 claims: userClaims,
-                expires: exp ?? DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(15),
                 notBefore: DateTime.Now,
                 issuer: "SignIn_Provider",
                 audience: "BucketSubs_Service",
@@ -164,9 +182,11 @@ namespace bucketSubs.service.Controllers
             return new TokenDTO
             {
                 Token = resultToken,
-                ExpiryDate = jwt.ValidTo
+                ExpiryDate = jwt.ValidTo,
+                RefreshToken = Guid.NewGuid()
             };
         }
+        #endregion
 
         private async Task DeleteUserClaims(string id, List<Claim> claimsList, int cliamsCount)
         {

@@ -10,5 +10,6 @@ namespace DataAccessLayer.DTOs
     {
         public string Token { get; set; }
         public DateTime ExpiryDate { get; set; }
+        public Guid RefreshToken { get; set; }
     }
 }

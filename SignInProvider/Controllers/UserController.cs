@@ -3,6 +3,7 @@ using DataAccessLayer.DTOs;
 using DataAccessLayer.Models;
 using Microsoft.IdentityModel.Tokens;
 using SignInProvider.CustomFilters;
+using SignInProvider.OAuth;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -198,6 +199,30 @@ namespace SignInProvider.Controllers
         }
         #endregion
 
+        #region RevokeToken
+        [HttpDelete]
+        //[CustomAuthorize(Roles ="admin")]
+        [CustomAuthorize]
+        [Route("RevokeToken")]
+        public async Task<IHttpActionResult> RevokeToken(string userName)
+        {
+            try
+            {
+                var user = await _UserManager.FindByNameAsync(userName);
+
+                user.RefreshToken = Guid.NewGuid();
+
+                await _UserManager.UpdateAsync(user);
+
+                return Ok();
+            }
+            catch
+            {
+                return BadRequest();
+            }
+        }
+        #endregion
+        
         #region GenerateToken
         private TokenDTO GenerateToken(List<Claim> userClaims, Guid refreshToken)
         {
@@ -238,6 +263,7 @@ namespace SignInProvider.Controllers
             };
         }
         #endregion
+
 
         private async Task DeleteUserClaims(string id, List<Claim> claimsList, int cliamsCount)
         {

@@ -10,16 +10,16 @@ namespace DataAccessLayer.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [MaxLength]
+        [MaxLength(50)]
         public string FirstName { get; set; }
 
-        [MaxLength]
+        [MaxLength(50)]
         public string LastName { get; set; }
 
         public string Role { get; set; }
 
-        //public DateTime DateJoined { get; set; }
+        public Guid RefreshToken {get; set; }
 
-
+        public DateTime RefreshTokenExpiryDate { get; set; }
     }
 }

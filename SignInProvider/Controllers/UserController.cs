@@ -2,6 +2,7 @@
 using DataAccessLayer.DTOs;
 using DataAccessLayer.Models;
 using Microsoft.IdentityModel.Tokens;
+using SignInProvider.CustomFilters;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -11,10 +12,13 @@ using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Description;
 
-namespace bucketSubs.service.Controllers
+namespace SignInProvider.Controllers
 {
     [RoutePrefix("api/users")]
     public class UserController : ApiController
@@ -22,13 +26,6 @@ namespace bucketSubs.service.Controllers
         private static readonly log4net.ILog log =
             log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        //private ApplicationUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    }
-        //}
 
         private readonly ApplicationUserManager _UserManager;
         public UserController(ApplicationUserManager UserManager)
@@ -53,18 +50,18 @@ namespace bucketSubs.service.Controllers
             try
             {
                 var creationResult = await _UserManager.CreateAsync(user, registerDTO.Password);
-                if(!creationResult.Succeeded)
+                if (!creationResult.Succeeded)
                 {
                     return Ok(creationResult.Errors);
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 log.Error(e.Message);
                 return InternalServerError();
             }
             #endregion
-            
+
             var claimsList = new List<Claim>
             {
                 new Claim (ClaimTypes.NameIdentifier, user.UserName),
@@ -87,7 +84,7 @@ namespace bucketSubs.service.Controllers
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 await _UserManager.DeleteAsync(user);
                 log.Error(e.Message);
@@ -100,7 +97,8 @@ namespace bucketSubs.service.Controllers
         }
         #endregion
 
-        [HttpGet]
+        #region Login
+        [HttpGet, ResponseType(typeof(TokenDTO))]
         [Route("Login")]
         public async Task<IHttpActionResult> Login(LoginDTO loginDTO)
         {
@@ -127,7 +125,19 @@ namespace bucketSubs.service.Controllers
 
                 var userClaims = await _UserManager.GetClaimsAsync(user.Id);
 
-                return Ok(GenerateToken(userClaims.ToList(), null));
+                var ResultToken = GenerateToken(userClaims.ToList(), Guid.NewGuid());
+
+                user.RefreshToken = ResultToken.RefreshToken;
+                user.RefreshTokenExpiryDate = DateTime.Now.AddMonths(1);
+
+                var updatingResult = await _UserManager.UpdateAsync(user);
+
+                if (!updatingResult.Succeeded)
+                {
+                    return InternalServerError(new Exception("Something Went Wrong, Try Again In A Few Minutes ..."));
+                }
+
+                return Ok(ResultToken);
             }
             catch (Exception e)
             {
@@ -136,8 +146,60 @@ namespace bucketSubs.service.Controllers
             }
 
         }
+        #endregion
 
-        private TokenDTO GenerateToken(List<Claim> userClaims, DateTime? exp)
+        #region RefreshToken
+        [BasicAuthentication_ValidToken]
+        [HttpPost, ResponseType(typeof(TokenDTO))]
+        [Route("RefreshToken")]
+        public async Task<IHttpActionResult> RefreshToken([FromBody]Guid refreshToken)
+        {
+            #region Validation
+            //var userName = Thread.CurrentPrincipal.Identity.Name;
+            var userName = HttpContext.Current.User.Identity.Name; //user is the current principal
+
+            var user = await _UserManager.FindByNameAsync(userName);
+            if (User is null)
+            {
+                return BadRequest("Wrong Token Credentials");
+            }
+
+            if (user.RefreshToken != refreshToken || user.RefreshTokenExpiryDate < DateTime.Now)
+            {
+                return BadRequest("Invalid Token");
+            }
+            #endregion
+
+            #region GerateToken
+            var requestToken = Request.Headers.Authorization?.Parameter;
+
+            if(requestToken is null)
+            {
+                return BadRequest("Invalid Token");
+            }
+
+            var SecurityToken = new JwtSecurityToken(requestToken);
+
+            var SecurityTokenClaims = SecurityToken.Claims.ToList();
+
+            var generatedToken = GenerateToken(SecurityTokenClaims, user.RefreshToken);
+
+            user.RefreshTokenExpiryDate = DateTime.Now.AddMonths(1);
+
+            var updatingResult = await _UserManager.UpdateAsync(user);
+
+            if(!updatingResult.Succeeded)
+            {
+                return InternalServerError(new Exception("Something Went Wrong, Try Again In A Few Minutes ..."));
+            }
+
+            return Ok(generatedToken);
+            #endregion
+        }
+        #endregion
+
+        #region GenerateToken
+        private TokenDTO GenerateToken(List<Claim> userClaims, Guid refreshToken)
         {
             #region Getting Secret Key ready
             var secretKey = ConfigurationManager.AppSettings["SecretKey"];
@@ -156,7 +218,7 @@ namespace bucketSubs.service.Controllers
 
             var jwt = new JwtSecurityToken(
                 claims: userClaims,
-                expires: exp ?? DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(15),
                 notBefore: DateTime.Now,
                 issuer: "SignIn_Provider",
                 audience: "BucketSubs_Service",
@@ -171,17 +233,18 @@ namespace bucketSubs.service.Controllers
             return new TokenDTO
             {
                 Token = resultToken,
-                ExpiryDate = jwt.ValidTo
+                ExpiryDate = jwt.ValidTo,
+                RefreshToken = refreshToken
             };
         }
+        #endregion
 
         private async Task DeleteUserClaims(string id, List<Claim> claimsList, int cliamsCount)
         {
-            for(int i = 0; i< cliamsCount; i++)
+            for (int i = 0; i < cliamsCount; i++)
             {
                 await _UserManager.RemoveClaimAsync(id, claimsList[i]);
             }
         }
     }
-
-    }
+}

@@ -145,10 +145,15 @@
     <Compile Include="Migrations\202207291925015_alter-identity-table-names.designer.cs">
       <DependentUpon>202207291925015_alter-identity-table-names.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202208031210531_add_RefreshToken.cs" />
+    <Compile Include="Migrations\202208031210531_add_RefreshToken.designer.cs">
+      <DependentUpon>202208031210531_add_RefreshToken.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\BucketOption.cs" />
     <Compile Include="Models\ErrorCode.cs" />
+    <Compile Include="Models\RefreshTokenInputDTO.cs" />
     <Compile Include="Models\WSDLResponseLog.cs" />
     <Compile Include="Data\Context\ApplicationDbContext.cs" />
     <Compile Include="Models\WSDLResponseLog_ProfileStatus.cs" />
@@ -181,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202207291925015_alter-identity-table-names.resx">
       <DependentUpon>202207291925015_alter-identity-table-names.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202208031210531_add_RefreshToken.resx">
+      <DependentUpon>202208031210531_add_RefreshToken.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

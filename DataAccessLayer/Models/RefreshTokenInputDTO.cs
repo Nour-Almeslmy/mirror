@@ -4,12 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.DTOs
+namespace DataAccessLayer.Models
 {
-    public class TokenDTO
+    public class RefreshTokenInputDTO
     {
         public string Token { get; set; }
-        public DateTime ExpiryDate { get; set; }
         public Guid RefreshToken { get; set; }
     }
 }

@@ -32,7 +32,7 @@ namespace bucketSubs.service.Controllers
         [Route("getProfileStatus/{dial_}")]
         public IHttpActionResult GetDataProfileStatus(string dial_)
         {
-            //var username = Thread.CurrentPrincipal.Identity.Name;
+            var username = Thread.CurrentPrincipal.Identity.Name;
 
             var isMock = checkMocking();
 

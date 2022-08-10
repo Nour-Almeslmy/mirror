@@ -1,8 +1,8 @@
 using DataAccessLayer.Data;
 using DataAccessLayer.Data.Context;
-using DataAccessLayer.Models;
-using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
+using SignInProviderBL.OathHandler;
+using SignInProviderBL.SignInProviderBL;
+using SignInProviderBL.TokenHandler;
 using System;
 
 using Unity;
@@ -53,6 +53,10 @@ namespace SignInProvider
             //container.RegisterType<UserManager<ApplicationUser>>();
             container.RegisterType<ApplicationUserManager>(new PerResolveLifetimeManager());
             container.RegisterType<ApplicationDbContext>(new PerResolveLifetimeManager());
+
+            container.RegisterType<ITokenHandler, TokenHandler>();
+            container.RegisterType<ISignInProviderHelper, SignInProviderHelper>();
+            container.RegisterType<IOathHandler, OathHandler>();
         }
     }
 }

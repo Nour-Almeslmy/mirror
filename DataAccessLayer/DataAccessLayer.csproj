@@ -46,9 +46,6 @@
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.3\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin, Version=4.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Owin.4.2.2\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -154,6 +151,7 @@
     <Compile Include="Models\BucketOption.cs" />
     <Compile Include="Models\ErrorCode.cs" />
     <Compile Include="Models\RefreshTokenInputDTO.cs" />
+    <Compile Include="Models\SignInProviderResponse.cs" />
     <Compile Include="Models\WSDLResponseLog.cs" />
     <Compile Include="Data\Context\ApplicationDbContext.cs" />
     <Compile Include="Models\WSDLResponseLog_ProfileStatus.cs" />

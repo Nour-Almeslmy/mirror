@@ -21,7 +21,7 @@ namespace bucketSubs.service
             var cors = new EnableCorsAttribute(origins: "*", headers: "*", methods: "*");
             config.EnableCors();
 
-            config.MessageHandlers.Add(new BasicAuthenticationMessageHandler());
+            //config.MessageHandlers.Add(new BasicAuthenticationMessageHandler());
 
             // Web API routes
             config.MapHttpAttributeRoutes();

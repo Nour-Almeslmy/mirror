@@ -9,6 +9,7 @@ using DataAccessLayer.DTOs;
 using BusinessLogicLayer.ControllerHelper.ProfileController;
 using System.Threading;
 using bucketSubs.service.OAuth;
+using System.Web;
 
 namespace bucketSubs.service.Controllers
 {
@@ -33,6 +34,7 @@ namespace bucketSubs.service.Controllers
         public IHttpActionResult GetDataProfileStatus(string dial_)
         {
             var username = Thread.CurrentPrincipal.Identity.Name;
+            var userName_ = HttpContext.Current.User.Identity.Name;
 
             var isMock = checkMocking();
 

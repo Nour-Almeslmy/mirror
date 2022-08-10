@@ -172,6 +172,10 @@
       <Project>{1b9fd5dd-7abf-4110-8f49-3d980bd4b26d}</Project>
       <Name>DataAccessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SignInProviderBL\SignInProviderBL.csproj">
+      <Project>{1c410059-0aae-44e5-b10c-7f853227382c}</Project>
+      <Name>SignInProviderBL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

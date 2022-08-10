@@ -11,10 +11,10 @@ namespace DataAccessLayer.Data.Context
         {
         }
 
-        public static ApplicationDbContext Create()
-        {
-            return new ApplicationDbContext();
-        }
+        //public static ApplicationDbContext Create()
+        //{
+        //    return new ApplicationDbContext();
+        //}
 
         //public virtual DbSet<WSDLResponseLog> WSDLResponseLogs { get; set; }
         public virtual DbSet<WSDLResponseLog_ProfileStatus> ProfileStatusResponses { get; set; }

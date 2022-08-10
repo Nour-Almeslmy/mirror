@@ -1,6 +1,7 @@
 using BusinessLogicLayer.ControllerHelper.ProfileController;
 using BusinessLogicLayer.Helpers;
 using BusinessLogicLayer.Utilities;
+using DataAccessLayer.Data;
 using DataAccessLayer.Data.Context;
 using DataAccessLayer.Data.Repositories;
 using DataAccessLayer.Data.UnitOfWork;
@@ -49,6 +50,7 @@ namespace bucketSubs.service
 
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
+
             container.RegisterType<IProfileControllerHelper, ProfileControllerHelper>();
             container.RegisterType<IXMLSerializer, XMLSerializer>();
             container.RegisterType<IUnitOfWork, UnitOfWork>();
@@ -56,8 +58,12 @@ namespace bucketSubs.service
             container.RegisterType<IProfileStatusRepo, ProfileStatusRepo>();
             container.RegisterType<IClassesMigrationRepo, ClassesMigrationRepo>();
 
+            container.RegisterType<ApplicationUserManager>(new PerResolveLifetimeManager());
+            container.RegisterType<ApplicationDbContext>(new PerResolveLifetimeManager());
+
+
             //Inject EF6 DbContext with each request (Singleton)
-            container.RegisterType<ApplicationDbContext>(new HierarchicalLifetimeManager());
+            //container.RegisterType<ApplicationDbContext>(new HierarchicalLifetimeManager());
             //If you forget to specify it, a new DbContext will be injected in each of your repositories/command/query objects,
             //you'll not be able to share the context and everything will fall apart.
         }

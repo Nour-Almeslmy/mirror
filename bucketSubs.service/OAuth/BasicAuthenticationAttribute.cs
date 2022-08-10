@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -11,14 +10,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using DataAccessLayer.Data;
 using DataAccessLayer.DTOs;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
 
 namespace BusinessLogicLayer.CustomFilters
 {
@@ -26,6 +21,7 @@ namespace BusinessLogicLayer.CustomFilters
     {
         public async override void OnAuthorization(HttpActionContext actionContext)
         {
+            var secretKey = ConfigurationManager.AppSettings["SecretKey"];
             if (await AuthorizeRequest_ValidToken(actionContext))
                 return;
             else
@@ -136,12 +132,12 @@ namespace BusinessLogicLayer.CustomFilters
                 return false;
             }
 
+            var secretKey = ConfigurationManager.AppSettings["SecretKey"];
             var TokenHandler = new JwtSecurityTokenHandler();
             //var SecurityToken = TokenHandler.ReadToken(RequestToken);
             //var canValidate = TokenHandler.CanValidateToken;
 
             //Generate security key
-            var secretKey = ConfigurationManager.AppSettings["SecretKey"];
             var secretKeyInBytes = Encoding.ASCII.GetBytes(secretKey);
             var key = new SymmetricSecurityKey(secretKeyInBytes);
 

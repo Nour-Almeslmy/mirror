@@ -1,40 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.Configuration;
 using System.Net;
 using System.Net.Http;
-using System.Security.Claims;
-using System.Security.Principal;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
-using Microsoft.IdentityModel.Tokens;
+using SignInProviderBL.OathHandler;
 
-namespace SignInProvider.CustomFilters
+namespace SignInProvider.OAth
 {
     public class BasicAuthentication_ValidToken : AuthorizationFilterAttribute
     {
         public async override void OnAuthorization(HttpActionContext actionContext)
         {
-            if (await ValidateToken(actionContext))
+            if (await ValidateToken_mod(actionContext))
                 return;
             else
                 actionContext.Response = 
                     actionContext.Request.CreateResponse(HttpStatusCode.BadRequest, "Invalid Token");
         }
+
+        private async Task<bool> ValidateToken_mod(HttpActionContext actionContext)
+        {
+            var RequestToken = actionContext.Request.Headers.Authorization?.Parameter;
+            if (RequestToken is null)
+                return false;
+
+            var secretKey = ConfigurationManager.AppSettings["SecretKey"];
+
+            var BasicAuth = new BasicAuthentication(RequestToken, secretKey);
+
+            if(await BasicAuth.ValidateToken())
+            {
+                var Principal = BasicAuth.CreatePrincipal();
+
+                Thread.CurrentPrincipal = Principal;
+
+                if (HttpContext.Current != null)
+                {
+                    HttpContext.Current.User = Principal;
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        #region Old Validation
+        /*
         private async Task<bool> ValidateToken(HttpActionContext actionContext)
         {
             var RequestToken = actionContext.Request.Headers.Authorization?.Parameter;
 
             if (RequestToken is null)
-            {
                 return false;
-            }
+
 
             var TokenHandler = new JwtSecurityTokenHandler();
 
@@ -52,11 +76,11 @@ namespace SignInProvider.CustomFilters
                 ValidIssuer = "SignIn_Provider",
                 ValidateAudience = true,
                 ValidAudience = "BucketSubs_Service",
-                ValidateLifetime = true
+                ValidateLifetime = false
             };
 
             var TokenValidationResult = await TokenHandler.ValidateTokenAsync(RequestToken, ValidationParameters);
-            
+
             if (TokenValidationResult.IsValid)
             {
                 #region Create a Principal Object and attach it to the current thread
@@ -80,6 +104,8 @@ namespace SignInProvider.CustomFilters
             else
                 return false;
         }
+        */
+        #endregion
 
     }
 }

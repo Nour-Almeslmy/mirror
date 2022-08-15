@@ -51,8 +51,9 @@ namespace SignInProvider
 
             //container.RegisterType<UserStore<ApplicationUser>, UserStore<ApplicationUser>>();
             //container.RegisterType<UserManager<ApplicationUser>>();
-            container.RegisterType<ApplicationUserManager>(new PerResolveLifetimeManager());
-            container.RegisterType<ApplicationDbContext>(new PerResolveLifetimeManager());
+            //new PerResolveLifetimeManager()
+            container.RegisterType<ApplicationUserManager>();
+            container.RegisterType<ApplicationDbContext>();
 
             container.RegisterType<ITokenHandler, TokenHandler>();
             container.RegisterType<ISignInProviderHelper, SignInProviderHelper>();

@@ -13,7 +13,7 @@ namespace SignInProviderBL.SignInProviderBL
 
         Task<TokenDTO> GenerateToken(string userName, string secretKey);
 
-        Task<SignInProviderResponse> ValidateToken(string userName, Guid refreshToken);
+        Task<SignInProviderResponse> ValidateRefreshToken(string userName, Guid refreshToken);
 
         Task<TokenDTO> GenerateRefreshToken(string userName, string token, string secretKey, bool rotationalToken);
 

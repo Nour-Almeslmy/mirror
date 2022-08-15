@@ -70,11 +70,11 @@ namespace SignInProvider.Controllers
         [Route("RefreshToken")]
         public async Task<IHttpActionResult> RefreshToken([FromBody]Guid refreshToken)
         {
-            #region Validation
+            #region Refresh-Token-Validation
             //var userName = Thread.CurrentPrincipal.Identity.Name;
             var userName = HttpContext.Current.User.Identity.Name; //user is the current principal
 
-            var CheckTokenValidation =await _signInProvider.ValidateToken(userName, refreshToken);
+            var CheckTokenValidation =await _signInProvider.ValidateRefreshToken(userName, refreshToken);
 
             if(!CheckTokenValidation.Result)
             {
@@ -113,7 +113,7 @@ namespace SignInProvider.Controllers
             #region Validation
             var userName = HttpContext.Current.User.Identity.Name;
 
-            var CheckTokenValidation = await _signInProvider.ValidateToken(userName, refreshToken);
+            var CheckTokenValidation = await _signInProvider.ValidateRefreshToken(userName, refreshToken);
 
             if (!CheckTokenValidation.Result && CheckTokenValidation.ErrorMessage == "Invalid Refresh Token")
             { 

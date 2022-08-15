@@ -159,33 +159,34 @@ namespace SignInProviderBL.SignInProviderBL
             }
         }
 
-        public async Task<SignInProviderResponse> ValidateToken(string userName, Guid refreshToken)
+        public async Task<SignInProviderResponse> ValidateRefreshToken(string userName, Guid refreshToken)
         {
-            //var user = await _userManager.FindByNameAsync(userName);
+            var user = await _userManager.FindByNameAsync(userName);
 
-            var user = await GetUser(userName);
+            //var user = await GetUser(userName);
+
+            var response = new SignInProviderResponse(true);
 
             if (user is null)
             {
-                var response = new SignInProviderResponse(false, "Wrong Token Credentials");
+                response = new SignInProviderResponse(false, "Wrong Token Credentials");
                 return response;
             }
 
             if (user.RefreshToken != refreshToken || user.RefreshTokenExpiryDate < DateTime.Now)
             {
-                var response = new SignInProviderResponse(false, "Invalid Refresh Token");
+                response = new SignInProviderResponse(false, "Invalid Refresh Token");
                 return response;
             }
 
-            var response_ = new SignInProviderResponse(true, string.Empty);
-            return response_;
+            return response;
         }
 
         public async Task<TokenDTO> GenerateRefreshToken(string userName, string token, string secretKey, bool rotationalToken)
         {
-            //var user = _userManager.FindByName(userName);
+            var user = await _userManager.FindByNameAsync(userName);
 
-            var user = await GetUser(userName);
+            //var user = await GetUser(userName);
 
             var SecurityToken = new JwtSecurityToken(token);
 
